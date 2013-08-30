@@ -303,7 +303,7 @@ class BootstrapFormHelper extends FormHelper
             }
         }
 
-        if ('checkbox' !== $options['type'] && 'hidden' !== $options['type']) {
+        if ('checkbox' !== $options['type'] && 'hidden' !== $options['type'] && 'radio' !== $options['type']) {
             $options['class'] = 'form-control';
         }
 
