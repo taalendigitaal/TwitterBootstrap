@@ -1,5 +1,3 @@
-#Development of this plugin has moved [BoostCake](https://github.com/slywalker/cakephp-plugin-boost_cake).
-
 #TwitterBootstrap Plugin for CakePHP2.x
 The TwitterBootstrap Plugin provides an easy-to-use feature Bootstrap in CakePHP2.x
 
@@ -33,7 +31,7 @@ Composer
 	  ],
 	  "require": {
 	    "twitter/bootstrap": "dev-master",
-	    "slywalker/twitter_bootstrap": "dev-master"
+	    "taalendigitaal/twitter_bootstrap": "dev-master"
 	  },
 	  "config": {
 	    "vendor-dir": "Vendor"
@@ -43,13 +41,13 @@ Composer
 Submodule
 
 	$ cd /your_app_path
-	$ git submodule add git://github.com/slywalker/TwitterBootstrap.git Plugin/TwitterBootstrap
+	$ git submodule add git://github.com/taalendigitaal/TwitterBootstrap.git Plugin/TwitterBootstrap
 	$ git submodule update --init --recursive
 
 Clone
 
 	$ cd /your_app_path/Plugin
-	$ git clone git://github.com/slywalker/TwitterBootstrap.git
+	$ git clone git://github.com/taalendigitaal/TwitterBootstrap.git
 	$ cd TwitterBootstrap
 	$ git submodule update --init
 
