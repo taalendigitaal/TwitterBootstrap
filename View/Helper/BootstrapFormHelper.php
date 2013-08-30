@@ -10,9 +10,9 @@ class BootstrapFormHelper extends FormHelper {
 
 	const FORM_HORIZONTAL = 'form-horizontal';
 
-	const CLASS_GROUP = 'control-group';
+	const CLASS_GROUP = 'form-group';
 
-	const CLASS_INPUTS = 'controls';
+	const CLASS_INPUTS = 'form-control';
 
 	const CLASS_ACTION = 'form-actions';
 
