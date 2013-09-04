@@ -303,12 +303,12 @@ class BootstrapFormHelper extends FormHelper
             }
         }
 
-        if ('text' === $options['type'] || 'password' === $options['type'] || 'select' === $options['type'] || 'textarea' === $options['type']) {
-		    if (!isset($options['class']) || !$options['class']) {
-	        	$options['class'] = 'form-control';
-		    } else {
-		    	$options['class'] .= ' form-control';
-		    }
+        if ('checkbox' !== $options['type'] && 'radio' !== $options['type']) {
+            if (!isset($options['class']) || !$options['class']) {
+                $options['class'] = 'form-control';
+            } else {
+                $options['class'] .= ' form-control';
+            }
         }
 
         return $options;
