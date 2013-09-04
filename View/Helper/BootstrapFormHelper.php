@@ -303,7 +303,7 @@ class BootstrapFormHelper extends FormHelper
             }
         }
 
-        if ('text' === $options['type'] && 'password' === $options['type']) {
+        if ('text' === $options['type'] || 'password' === $options['type']) {
 		    if (!isset($options['class']) || !$options['class']) {
 	        	$options['class'] = 'form-control';
 		    }
