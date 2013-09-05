@@ -1,4 +1,5 @@
 <?php
+
 App::uses('FormHelper', 'View/Helper');
 App::uses('Set', 'Utility');
 
@@ -113,11 +114,7 @@ class BootstrapFormHelper extends FormHelper
 
     public function input($fieldName, $options = array())
     {
-        $options = array_merge(
-            array('format' => array('before', 'label', 'between', 'input', 'error', 'after')),
-            $this->_inputDefaults,
-            $options
-        );
+        $options = array_merge(array('format' => array('before', 'label', 'between', 'input', 'error', 'after')), $this->_inputDefaults, $options);
         $this->_Opts[$fieldName] = $options;
 
         $type = $this->_extractOption('type', $options);
@@ -261,11 +258,11 @@ class BootstrapFormHelper extends FormHelper
         } else {
             $type = $this->_extractOption('type', $this->_Opts[$fieldName]);
 
-            $default = array('wrap' => 'span', 'class' => 'add-on');
+            $default = array('wrap' => 'span', 'class' => 'input-group-addon');
             $divOptions = array();
             foreach (array('prepend', 'append') as $addon) {
-                $addon = null;
-                $option = (array)$this->_extractOption($addon, $options);
+                $$addon = null;
+                $option = (array) $this->_extractOption($addon, $options);
                 if ($option) {
                     if (!is_array($option[0])) {
                         $option = array($option);
@@ -282,7 +279,7 @@ class BootstrapFormHelper extends FormHelper
                     }
 
                     unset($options[$addon]);
-                    $divOptions = $this->addClass($divOptions, 'input-' . $addon);
+                    $divOptions = $this->addClass($divOptions, 'input-group');
                 }
             }
             $out = $prepend . $this->{$type}($fieldName, $options) . $append;
@@ -318,7 +315,7 @@ class BootstrapFormHelper extends FormHelper
     {
         $div = $this->_extractOption('div', $options);
         if (false !== $div) {
-            $inlines = (array)$this->_extractOption('helpInline', $options, array());
+            $inlines = (array) $this->_extractOption('helpInline', $options, array());
             foreach ($options as $key => $value) {
                 if (in_array($key, array('warning', 'success'))) {
                     unset($options[$key]);
@@ -350,7 +347,7 @@ class BootstrapFormHelper extends FormHelper
     protected function _buildAfter($options)
     {
         $outInline = array();
-        $inlines = (array)$this->_extractOption('helpInline', $options, array());
+        $inlines = (array) $this->_extractOption('helpInline', $options, array());
         if ($inlines) {
             unset($options['helpInline']);
         }
@@ -360,7 +357,7 @@ class BootstrapFormHelper extends FormHelper
         $outInline = implode(' ', $outInline);
 
         $outBlock = array();
-        $blocks = (array)$this->_extractOption('helpBlock', $options, array());
+        $blocks = (array) $this->_extractOption('helpBlock', $options, array());
         if ($blocks) {
             unset($options['helpBlock']);
         }
@@ -426,4 +423,5 @@ class BootstrapFormHelper extends FormHelper
         }
         return $out;
     }
+
 }
