@@ -434,4 +434,16 @@ class BootstrapFormHelper extends FormHelper
         return $out;
     }
 
+    public function actionsCreate($options = array())
+    {
+        $class = $this->_extractOption('class', $options, 'col-md-4 col-md-offset-2'); // @todo configurable class
+
+        return $this->Html->useTag('tagstart', 'div', array('class' => self::CLASS_GROUP)) . $this->Html->useTag('tagstart', 'div', array('class' => $class));
+    }
+
+    public function actionsEnd()
+    {
+        return $this->Html->useTag('tagend', 'div') . $this->Html->useTag('tagend', 'div');
+    }
+
 }
