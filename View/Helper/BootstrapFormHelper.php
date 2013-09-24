@@ -120,8 +120,6 @@ class BootstrapFormHelper extends FormHelper
         $type = $this->_extractOption('type', $options);
         $options = $this->_getType($fieldName, $options);
 
-
-
         $hidden = null;
         if ('hidden' === $options['type']) {
             $options['div'] = false;
@@ -155,6 +153,13 @@ class BootstrapFormHelper extends FormHelper
         $before = $this->_extractOption('before', $options);
         $options['before'] = null;
 
+        $modelKey = $this->model();
+        $fieldKey = $this->field();
+        $required = $this->_introspectModel($modelKey, 'validates', $fieldKey);
+        if ($required) {
+            $div .= ' required';
+        }
+
         $label = $this->_extractOption('label', $options);
         if (false !== $label) {
             if (!is_array($label)) {
@@ -164,6 +169,12 @@ class BootstrapFormHelper extends FormHelper
                 $class = $this->_extractOption('class', $label, 'col-md-2');
                 $label = $this->addClass($label, $class);
             }
+
+            if ($required && is_array($label)) {
+                $class = 'required';
+                $label = $this->addClass($label, $class);
+            }
+
             $text = $label['text'];
             unset($label['text']);
             $label = $this->label($fieldName, $text, $label);
@@ -172,7 +183,6 @@ class BootstrapFormHelper extends FormHelper
 
         $between = $this->_extractOption('between', $options);
         $options['between'] = null;
-
 
         $input = parent::input($fieldName, $options);
         $divControls = $this->_extractOption('divControls', $options, self::CLASS_INPUTS);
