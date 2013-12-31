@@ -18,7 +18,8 @@ class BootstrapFormHelper extends FormHelper
         'class_error' => 'error',
         'ajaxSettings' => array(
             'class_labels' => 'col-md-4',
-            'class_inputs' => 'col-md-8'
+            'class_inputs' => 'col-md-8',
+            'class_inputs' => 'col-md-8 col-md-offset-4'
         )
     );
 
