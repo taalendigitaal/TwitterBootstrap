@@ -5,15 +5,22 @@ App::uses('Set', 'Utility');
 
 class BootstrapFormHelper extends FormHelper
 {
-
-    const FORM_SEARCH = 'form-search';
-    const FORM_INLINE = 'form-inline';
-    const FORM_HORIZONTAL = 'form-horizontal';
-    const CLASS_GROUP = 'form-group';
-    const CLASS_INPUTS = 'col-md-4';
-    const CLASS_ACTION = 'form-actions';
-    const CLASS_BUTTON = 'btn btn-default';
-    const CLASS_ERROR = 'error';
+    public $settings = array(
+        'form_search' => 'form-search',
+        'form_inline' => 'form-inline',
+        'form_horizontal' => 'form-horizontal',
+        'class_group' => 'form-group',
+        'class_labels' => 'col-md-2',
+        'class_inputs' => 'col-md-4',
+        'class_actions' => 'col-md-4 col-md-offset-2',
+        'class_action' => 'form-actions',
+        'class_button' => 'btn btn-default',
+        'class_error' => 'error',
+        'ajaxSettings' => array(
+            'class_labels' => 'col-md-4',
+            'class_inputs' => 'col-md-8'
+        )
+    );
 
     public $helpers = array('Html' => array('className' => 'TwitterBootstrap.BootstrapHtml'));
     protected $_isHorizontal = false;
@@ -21,17 +28,25 @@ class BootstrapFormHelper extends FormHelper
 
     public function create($model = null, $options = array())
     {
+        $this->settings = array_merge($this->settings, $options);
+        if ($this->request->isAjax && ! empty($this->settings['ajaxSettings'])) {
+            $this->settings = array_merge($this->settings, $this->settings['ajaxSettings']);
+        }
+        if ($this->request->isAjax && ! empty($options['ajaxSettings'])) {
+            $this->settings = array_merge($this->settings, $options['ajaxSettings']);
+        }
+
         $class = explode(' ', $this->_extractOption('class', $options));
         $inputDefaults = $this->_extractOption('inputDefaults', $options, array());
 
-        if (in_array(self::FORM_HORIZONTAL, $class)) {
+        if (in_array($this->settings['form_horizontal'], $class)) {
             $this->_isHorizontal = true;
         }
 
-        if (in_array(self::FORM_SEARCH, $class) || in_array(self::FORM_INLINE, $class)) {
+        if (in_array($this->settings['form_search'], $class) || in_array($this->settings['form_inline'], $class)) {
             $options['inputDefaults'] = Set::merge($inputDefaults, array('div' => false, 'label' => false));
         } else {
-            $options['inputDefaults'] = Set::merge($inputDefaults, array('div' => self::CLASS_GROUP));
+            $options['inputDefaults'] = Set::merge($inputDefaults, array('div' => $this->settings['class_group']));
         }
 
         return parent::create($model, $options);
@@ -94,13 +109,13 @@ class BootstrapFormHelper extends FormHelper
     {
         $default = array(
             'type' => 'submit',
-            'class' => self::CLASS_BUTTON,
-            'div' => self::CLASS_ACTION,
+            'class' => $this->settings['class_button'],
+            'div' => $this->settings['class_action'],
             'icon' => null,
         );
         $options = array_merge($default, $this->_inputDefaults, $options);
         if ($options['div'] !== false && $this->_isHorizontal) {
-            $options['div'] = self::CLASS_ACTION;
+            $options['div'] = $this->settings['class_action'];
         }
         if ($options['icon']) {
             $caption = $this->Html->icon($options['icon']) . ' ' . $caption;
@@ -166,7 +181,7 @@ class BootstrapFormHelper extends FormHelper
                 $label = array('text' => $label);
             }
             if (false !== $div) {
-                $class = $this->_extractOption('class', $label, 'col-md-2');
+                $class = $this->_extractOption('class', $label, $this->settings['class_labels']);
                 $label = $this->addClass($label, $class);
             }
 
@@ -185,7 +200,7 @@ class BootstrapFormHelper extends FormHelper
         $options['between'] = null;
 
         $input = parent::input($fieldName, $options);
-        $divControls = $this->_extractOption('divControls', $options, self::CLASS_INPUTS);
+        $divControls = $this->_extractOption('divControls', $options, $this->settings['class_inputs']);
 
         $input = $hidden . ((false === $div) ? $input : $this->Html->div($divControls, $input));
 
@@ -348,7 +363,7 @@ class BootstrapFormHelper extends FormHelper
                 ));
             }
             if (false !== $div) {
-                $options = $this->addClass($options, self::CLASS_ERROR, 'div');
+                $options = $this->addClass($options, $this->settings['class_error'], 'div');
             }
         }
         return $options;
@@ -436,9 +451,9 @@ class BootstrapFormHelper extends FormHelper
 
     public function actionsCreate($options = array())
     {
-        $class = $this->_extractOption('class', $options, 'col-md-4 col-md-offset-2'); // @todo configurable class
+        $class = $this->_extractOption('class', $options, $this->settings['class_actions']); // @todo configurable class
 
-        return $this->Html->useTag('tagstart', 'div', array('class' => self::CLASS_GROUP)) . $this->Html->useTag('tagstart', 'div', array('class' => $class));
+        return $this->Html->useTag('tagstart', 'div', array('class' => $this->settings['class_group'])) . $this->Html->useTag('tagstart', 'div', array('class' => $class));
     }
 
     public function actionsEnd()
