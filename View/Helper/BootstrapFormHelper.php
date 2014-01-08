@@ -172,7 +172,7 @@ class BootstrapFormHelper extends FormHelper
         $modelKey = $this->model();
         $fieldKey = $this->field();
         $required = $this->_introspectModel($modelKey, 'validates', $fieldKey);
-        if ($required && $type !== 'hidden' && $type !== 'checkbox') {
+        if ($div !== false && $required && $type !== 'hidden' && $type !== 'checkbox') {
             $div .= ' required';
         }
 
