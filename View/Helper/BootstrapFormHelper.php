@@ -10,12 +10,12 @@ class BootstrapFormHelper extends FormHelper
         'form_inline' => 'form-inline',
         'form_horizontal' => 'form-horizontal',
         'class_group' => 'form-group',
-        'class_labels' => 'col-md-2',
+        'class_labels' => 'control-label col-md-2',
         'class_inputs' => 'col-md-4',
         'class_actions' => 'col-md-4 col-md-offset-2',
         'class_action' => 'form-actions',
         'class_button' => 'btn btn-default',
-        'class_error' => 'error',
+        'class_error' => 'has-error',
         'ajaxSettings' => array(
             'class_labels' => 'col-md-4',
             'class_inputs' => 'col-md-8',
@@ -359,7 +359,7 @@ class BootstrapFormHelper extends FormHelper
                 $options['error'] = array_merge($error, array(
                     'attributes' => array(
                         'wrap' => 'span',
-                        'class' => 'help-inline error-message',
+                        'class' => 'help-block',
                     ),
                 ));
             }
