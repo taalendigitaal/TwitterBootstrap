@@ -171,7 +171,6 @@ class BootstrapFormHelper extends FormHelper
             $options = $this->addClass($options, 'disabled');
         }
 
-
         $div = $this->_extractOption('div', $options);
         $options['div'] = false;
 
@@ -467,6 +466,43 @@ class BootstrapFormHelper extends FormHelper
     }
 
     public function actionsEnd()
+    {
+        return $this->Html->useTag('tagend', 'div') . $this->Html->useTag('tagend', 'div');
+    }
+
+    public function inputCreate($fieldName, $options = array())
+    {
+        $options = array_merge(array('format' => array('between', 'error')), $this->_inputDefaults, $options);
+        $this->_Opts[$fieldName] = $options;
+
+        $modelKey = $this->model();
+        $fieldKey = $this->field();
+        $required = $this->_introspectModel($modelKey, 'validates', $fieldKey);
+
+        $label = $this->_extractOption('label', $options);
+        if (false !== $label) {
+            if (! is_array($label)) {
+                $label = array('text' => $label);
+            }
+
+            $class = $this->_extractOption('class', $label, $this->settings['class_labels']);
+
+            $label = $this->addClass($label, $class);
+
+            if ($required && is_array($label)) {
+                $class = 'required';
+                $label = $this->addClass($label, $class);
+            }
+
+            $text = $label['text'];
+            unset($label['text']);
+            $label = $this->label($fieldName, $text, $label);
+        }
+
+        return $this->Html->useTag('tagstart', 'div', array('class' => $this->settings['class_group'])) . $label . $this->Html->useTag('tagstart', 'div', array('class' => $this->settings['class_inputs']));
+    }
+
+    public function inputEnd()
     {
         return $this->Html->useTag('tagend', 'div') . $this->Html->useTag('tagend', 'div');
     }
