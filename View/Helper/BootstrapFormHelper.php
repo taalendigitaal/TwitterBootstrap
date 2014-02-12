@@ -208,8 +208,10 @@ class BootstrapFormHelper extends FormHelper
         $between = $this->_extractOption('between', $options);
         $options['between'] = null;
 
-        $input = parent::input($fieldName, $options);
         $divControls = $this->_extractOption('divControls', $options, $this->settings['class_inputs']);
+        $options['divControls'] = null;
+
+        $input = parent::input($fieldName, $options);
 
         $input = $hidden . ((false === $div) ? $input : $this->Html->div($divControls, $input));
 
