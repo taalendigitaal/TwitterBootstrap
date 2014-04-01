@@ -64,7 +64,7 @@ class BootstrapPaginatorHelper extends PaginatorHelper {
 		return $this->Html->tag('ul', implode("\n", $out), compact('class'));
 	}
 
-	public function prev($title = null, $options = array(), $disabledTitle = null, $disabledOptions = array()) {
+	public function prev($title = null, $options = array()) {
 		$default = array(
 			'title' => '<',
 			'tag' => 'li',
@@ -82,16 +82,20 @@ class BootstrapPaginatorHelper extends PaginatorHelper {
 		$params = (array)$this->params($options['model']);
 		if ($disabled === 'hide' && !$params['prevPage']) {
 			return null;
-		}
+		} elseif (!$params['prevPage']) {
+                    $disabledTitle = $this->Html->tag('span', $title, array('escape' => false));
+                } else {
+                    $disabledTitle = $this->Html->link($title, array(), array('escape' => false));
+                }
 		unset($options['disabled']);
 
-		return parent::prev($title, $options, $this->link($title), array_merge($options, array(
+		return parent::prev($title, $options, $disabledTitle, array_merge($options, array(
 			'escape' => false,
 			'class' => $disabled,
 		)));
 	}
 
-	public function next($title = null, $options = array(), $disabledTitle = null, $disabledOptions = array()) {
+	public function next($title = null, $options = array()) {
 		$default = array(
 			'title' => '>',
 			'tag' => 'li',
@@ -109,10 +113,14 @@ class BootstrapPaginatorHelper extends PaginatorHelper {
 		$params = (array)$this->params($options['model']);
 		if ($disabled === 'hide' && !$params['nextPage']) {
 			return null;
-		}
+		} elseif (!$params['nextPage']) {
+                    $disabledTitle = $this->Html->tag('span', $title, array('escape' => false));
+                } else {
+                    $disabledTitle = $this->Html->link($title, array(), array('escape' => false));
+                }
 		unset($options['disabled']);
 
-		return parent::next($title, $options, $this->link($title), array_merge($options, array(
+		return parent::next($title, $options, $disabledTitle, array_merge($options, array(
 			'escape' => false,
 			'class' => $disabled,
 		)));
