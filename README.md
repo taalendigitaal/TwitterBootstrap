@@ -129,7 +129,8 @@ Output form input as Bootstrap format
 			<?php echo $this->Form->input('field5', array(
 				'label' => 'Inline checkboxes',
 				'type' => 'select',
-				'multiple' => 'checkbox inline',
+				'multiple' => 'checkbox',
+				'inline' => true,
 				'options' => array('1', '2', '3'),
 			)); ?>
 			<?php echo $this->Form->input('field6', array(
@@ -149,6 +150,15 @@ Output form input as Bootstrap format
 				'options' => array(
 					'1' => 'Option one is this and that¡ªbe sure to include why it\'s great',
 					'2' => 'Option two can is something else and selecting it will deselect option one',
+				),
+			)); ?>
+			<?php echo $this->Form->input('field7', array(
+				'label' => 'Inline radio buttons',
+				'type' => 'radio',
+				'inline' => true,
+				'options' => array(
+					'1' => 'Option one',
+					'2' => 'Option two',
 				),
 			)); ?>
 			<div class="form-actions">

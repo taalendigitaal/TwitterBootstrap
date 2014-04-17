@@ -80,8 +80,14 @@ class BootstrapFormHelper extends FormHelper
     {
         $options['legend'] = false;
         $options['separator'] = "\n";
+
         $out = parent::radio($fieldName, $radioOptions, $options);
-        $out = $this->_restructureLabel($out, array('class' => 'radio'));
+
+        $inline = $this->_extractOption('inline', $options);
+        unset($options['inline']);
+
+        $class = $inline ? 'radio-inline' : 'radio';
+        $out = $this->_restructureLabel($out, array('class' => $class));
         return $out;
     }
 
@@ -109,11 +115,14 @@ class BootstrapFormHelper extends FormHelper
     public function select($fieldName, $options = array(), $attributes = array())
     {
         $multiple = $this->_extractOption('multiple', $attributes);
-        $checkbox = explode(' ', $multiple);
-        $attributes['multiple'] = $checkbox[0];
+        $inline = $this->_extractOption('inline', $attributes);
+        unset($attributes['inline']);
+
         $out = parent::select($fieldName, $options, $attributes);
-        if ('checkbox' === $checkbox[0]) {
-            $out = $this->_restructureLabel($out, array('class' => $multiple));
+
+        if ('checkbox' === $multiple) {
+            $class = $inline ? 'checkbox-inline' : 'checkbox';
+            $out = $this->_restructureLabel($out, array('class' => $class));
         }
         return $out;
     }
