@@ -70,6 +70,9 @@ class BootstrapFormHelper extends FormHelper
         $text = $label['text'];
         unset($label['text']);
         $out = parent::checkbox($fieldName, $options) . $text;
+        if ($options['checkboxLabel'] === false) {
+            return $out;
+        }
         return $this->label($fieldName, $out, $label);
     }
 
