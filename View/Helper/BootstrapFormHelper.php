@@ -182,7 +182,7 @@ class BootstrapFormHelper extends FormHelper
 
         $modelKey = $this->model();
         $fieldKey = $this->field();
-        $required = $this->_introspectModel($modelKey, 'validates', $fieldKey);
+        $required = isset($options['required']) ? $options['required'] : $this->_introspectModel($modelKey, 'validates', $fieldKey);
         if ($div !== false && $required && $type !== 'hidden' && $type !== 'checkbox') {
             $div .= ' required';
         }
@@ -211,8 +211,10 @@ class BootstrapFormHelper extends FormHelper
         $between = $this->_extractOption('between', $options);
         $options['between'] = null;
 
-        $input = parent::input($fieldName, $options);
         $divControls = $this->_extractOption('divControls', $options, $this->settings['class_inputs']);
+        $options['divControls'] = null;
+
+        $input = parent::input($fieldName, $options);
 
         $input = $hidden . ((false === $div) ? $input : $this->Html->div($divControls, $input));
 
@@ -301,10 +303,10 @@ class BootstrapFormHelper extends FormHelper
                 $$addon = null;
                 $option = (array) $this->_extractOption($addon, $options);
                 if ($option) {
-                    if (!is_array($option[0])) {
-                        $option = array($option);
-                    }
                     foreach ($option as $_option) {
+                        if (!is_array($_option)) {
+                            $_option = array($_option);
+                        }
                         array_push($_option, array());
                         list($text, $addonOptions) = $_option;
                         $addonOptions += $default;
