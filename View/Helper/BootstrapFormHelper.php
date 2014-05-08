@@ -88,14 +88,20 @@ class BootstrapFormHelper extends FormHelper
 
         $class = $inline ? 'radio-inline' : 'radio';
 
-        $out = $this->Html->div($class, $this->_restructureLabel($out));
+        $out = $this->_restructureLabel($out, array('class' => $class));
 
         return $out;
     }
 
     protected function _restructureLabel($out, $options = array())
     {
+        $out = preg_replace("/\n/", "", $out);
+        $out = str_replace("<input", "\n<input", $out);
         $out = explode("\n", $out);
+
+        $class = $this->_extractOption('class', $options);
+        unset($options['class']);
+
         foreach ($out as &$_out) {
             $regex = "@";
             $regex .= ".*";
@@ -109,6 +115,7 @@ class BootstrapFormHelper extends FormHelper
             $input = preg_replace($regex, "$1$2", $_out);
             if ($input) {
                 $_out = $this->Html->tag('label', $input, $options);
+                $_out = $this->Html->div($class, $_out);
             }
         }
         return implode("\n", $out);
