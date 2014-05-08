@@ -87,7 +87,9 @@ class BootstrapFormHelper extends FormHelper
         unset($options['inline']);
 
         $class = $inline ? 'radio-inline' : 'radio';
-        $out = $this->_restructureLabel($out, array('class' => $class));
+
+        $out = $this->Html->div($class, $this->_restructureLabel($out));
+
         return $out;
     }
 
