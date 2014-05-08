@@ -96,7 +96,8 @@ class BootstrapFormHelper extends FormHelper
     protected function _restructureLabel($out, $options = array())
     {
         $out = preg_replace("/\n/", "", $out);
-        $out = str_replace("<input", "\n<input", $out);
+        $out = preg_replace("/\<input/", "\n<input", $out);
+        $out = preg_replace("/\n/", "", $out, 1);
         $out = explode("\n", $out);
 
         $class = $this->_extractOption('class', $options);
