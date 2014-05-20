@@ -152,10 +152,19 @@ Output form input as Bootstrap format
 					'2' => 'Option two can is something else and selecting it will deselect option one',
 				),
 			)); ?>
-			<?php echo $this->Form->input('field7', array(
+			<?php echo $this->Form->input('field8', array(
 				'label' => 'Inline radio buttons',
 				'type' => 'radio',
 				'inline' => true,
+				'options' => array(
+					'1' => 'Option one',
+					'2' => 'Option two',
+				),
+			)); ?>
+                        <?php echo $this->Form->input('field9', array(
+				'label' => 'Inline radio buttons with button styling',
+				'type' => 'radio',
+				'inline' => 'buttons',
 				'options' => array(
 					'1' => 'Option one',
 					'2' => 'Option two',

@@ -86,9 +86,25 @@ class BootstrapFormHelper extends FormHelper
         $inline = $this->_extractOption('inline', $options);
         unset($options['inline']);
 
-        $class = $inline ? 'radio-inline' : 'radio';
+        if ($inline) {
+            $class = 'radio-inline';
+            if ($inline === 'buttons') {
+                $class = 'btn btn-default';
+            }
 
-        $out = $this->_restructureLabel($out, array('class' => $class));
+            $out = explode("\n", $out);
+            foreach ($out as &$_out) {
+                $checked = preg_match('/\<input[^>]*checked[^>]*\>/', $_out);
+                $_out = $this->Html->tag('label', $_out, array('class' => $class . ($inline === 'buttons' && $checked ? ' active' : '')));
+            }
+            $out = implode("\n", $out);
+
+            if ($inline === 'buttons') {
+                $out = $this->Html->div('btn-group', $out, array('data-toggle' => 'buttons'));
+            }
+        } else {
+            $out = $this->_restructureLabel($out, array('class' => 'radio'));
+        }
 
         return $out;
     }
