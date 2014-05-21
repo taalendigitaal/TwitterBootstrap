@@ -81,32 +81,24 @@ class BootstrapFormHelper extends FormHelper
         $options['legend'] = false;
         $options['separator'] = "\n";
 
-        $out = parent::radio($fieldName, $radioOptions, $options);
-
         $inline = $this->_extractOption('inline', $options);
         unset($options['inline']);
 
-        if ($inline) {
-            $class = 'radio-inline';
-            if ($inline === 'buttons') {
-                $class = 'btn btn-default';
-            }
+        $out = parent::radio($fieldName, $radioOptions, $options);
 
-            $out = explode("\n", $out);
-            foreach ($out as &$_out) {
-                $checked = preg_match('/\<input[^>]*checked[^>]*\>/', $_out);
-                $_out = $this->Html->tag('label', $_out, array('class' => $class . ($inline === 'buttons' && $checked ? ' active' : '')));
-            }
-            $out = implode("\n", $out);
-
-            if ($inline === 'buttons') {
-                $out = $this->Html->div('btn-group', $out, array('data-toggle' => 'buttons'));
-            }
-        } else {
-            $out = $this->_restructureLabel($out, array('class' => 'radio'));
+        // normal radio buttons
+        if (! $inline) {
+            return $this->_restructureLabel($out, array('div' => 'radio'));
         }
 
-        return $out;
+        // inline radio buttons
+        if ($inline === true) {
+            return $this->_restructureLabel($out, array('class' => 'radio-inline'));
+        }
+
+        // radio buttons with button style
+        $out = $this->_restructureLabel($out, array('class' => 'radio-inline btn btn-default', 'checkedClass' => 'radio-inline btn btn-default active'));
+        return $this->Html->div('btn-group', $out, array('data-toggle' => 'buttons'));
     }
 
     protected function _restructureLabel($out, $options = array())
@@ -116,8 +108,11 @@ class BootstrapFormHelper extends FormHelper
         $out = preg_replace("/\n/", "", $out, 1);
         $out = explode("\n", $out);
 
-        $class = $this->_extractOption('class', $options);
-        unset($options['class']);
+        $div = $this->_extractOption('div', $options);
+        unset($options['div']);
+
+        $checkedClass = $this->_extractOption('checkedClass', $options);
+        unset($options['checkedClass']);
 
         foreach ($out as &$_out) {
             $regex = "@";
@@ -130,11 +125,22 @@ class BootstrapFormHelper extends FormHelper
             $regex .= ".*";
             $regex .= "@";
             $input = preg_replace($regex, "$1$2", $_out);
-            if ($input) {
+
+            if (! $input) {
+                continue;
+            }
+
+            if ($checkedClass && preg_match('/\<input[^>]*checked[^>]*\>/', $_out)) {
+                $_out = $this->Html->tag('label', $input, array_merge($options, array('class' => $checkedClass)));
+            } else {
                 $_out = $this->Html->tag('label', $input, $options);
-                $_out = $this->Html->div($class, $_out);
+            }
+
+            if ($div) {
+                $_out = $this->Html->div($div, $_out);
             }
         }
+
         return implode("\n", $out);
     }
 
@@ -146,11 +152,24 @@ class BootstrapFormHelper extends FormHelper
 
         $out = parent::select($fieldName, $options, $attributes);
 
-        if ('checkbox' === $multiple) {
-            $class = $inline ? 'checkbox-inline' : 'checkbox';
-            $out = $this->_restructureLabel($out, array('class' => $class));
+        // select
+        if ('checkbox' !== $multiple) {
+            return $out;
         }
-        return $out;
+
+        // normal checkboxes
+        if (! $inline) {
+            return $this->_restructureLabel($out, array('div' => 'checkbox'));
+        }
+
+        // inline checkboxes
+        if ($inline === true) {
+            return $this->_restructureLabel($out, array('class' => 'checkbox-inline'));
+        }
+
+        // checkboxes with button style
+        $out = $this->_restructureLabel($out, array('class' => 'checkbox-inline btn btn-default', 'checkedClass' => 'checkbox-inline btn btn-default active'));
+        return $this->Html->div('btn-group', $out, array('data-toggle' => 'buttons'));
     }
 
     public function submit($caption = null, $options = array())
