@@ -97,7 +97,7 @@ class BootstrapFormHelper extends FormHelper
         }
 
         // radio buttons with button style
-        $out = $this->_restructureLabel($out, array('class' => 'radio-inline btn btn-default', 'checkedClass' => 'radio-inline btn btn-default active'));
+        $out = $this->_restructureLabel($out, array('class' => 'radio-inline btn btn-default', 'checkedClass' => 'active', 'disabledClass' => 'disabled'));
         return $this->Html->div('btn-group', $out, array('data-toggle' => 'buttons'));
     }
 
@@ -113,6 +113,9 @@ class BootstrapFormHelper extends FormHelper
 
         $checkedClass = $this->_extractOption('checkedClass', $options);
         unset($options['checkedClass']);
+
+        $disabledClass = $this->_extractOption('disabledClass', $options);
+        unset($options['disabledClass']);
 
         foreach ($out as &$_out) {
             $regex = "@";
@@ -130,11 +133,15 @@ class BootstrapFormHelper extends FormHelper
                 continue;
             }
 
-            if ($checkedClass && preg_match('/\<input[^>]*checked[^>]*\>/', $_out)) {
-                $_out = $this->Html->tag('label', $input, array_merge($options, array('class' => $checkedClass)));
-            } else {
-                $_out = $this->Html->tag('label', $input, $options);
+            $opt = $options;
+            if ($checkedClass && preg_match('/\<input[^>]*checked="checked"[^>]*\>/', $_out)) {
+                $opt['class'] = isset($opt['class']) ? implode(' ', array_merge(explode(' ', $opt['class']), explode(' ', $checkedClass))) : $checkedClass;
             }
+            if ($disabledClass && preg_match('/\<input[^>]*disabled="disabled"[^>]*\>/', $_out)) {
+                $opt['class'] = isset($opt['class']) ? implode(' ', array_merge(explode(' ', $opt['class']), explode(' ', $disabledClass))) : $disabledClass;
+            }
+
+            $_out = $this->Html->tag('label', $input, $opt);
 
             if ($div) {
                 $_out = $this->Html->div($div, $_out);
@@ -168,7 +175,7 @@ class BootstrapFormHelper extends FormHelper
         }
 
         // checkboxes with button style
-        $out = $this->_restructureLabel($out, array('class' => 'checkbox-inline btn btn-default', 'checkedClass' => 'checkbox-inline btn btn-default active'));
+        $out = $this->_restructureLabel($out, array('class' => 'checkbox-inline btn btn-default', 'checkedClass' => 'active', 'disabledClass' => 'disabled'));
         return $this->Html->div('btn-group', $out, array('data-toggle' => 'buttons'));
     }
 
