@@ -66,14 +66,16 @@ class BootstrapFormHelper extends FormHelper
             $label['class'] = null;
         }
 
-        $label = $this->addClass($label, 'checkbox');
         $text = $label['text'];
         unset($label['text']);
-        $out = parent::checkbox($fieldName, $options) . $text;
-        if (isset($options['checkboxLabel']) && $options['checkboxLabel'] === false) {
+        $out = parent::checkbox($fieldName, $options);
+
+        $checkboxLabel = $this->_extractOption('checkboxLabel', $options);
+        if (false === $checkboxLabel) {
             return $out;
         }
-        return $this->label($fieldName, $out, $label);
+
+        return $this->Html->div('checkbox', $this->label($fieldName, $out . $text, $label));
     }
 
     public function radio($fieldName, $radioOptions = array(), $options = array())
