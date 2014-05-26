@@ -61,6 +61,9 @@ class BootstrapFormHelper extends FormHelper
         }
         $after = $this->_extractOption('after', $this->_Opts[$fieldName]);
 
+        $divCheckbox = $this->_extractOption('divCheckbox', $options, 'checkbox');
+        unset($options['divCheckbox']);
+
         if ($this->_isHorizontal) {
             $label['text'] = $after;
             $label['class'] = null;
@@ -70,12 +73,11 @@ class BootstrapFormHelper extends FormHelper
         unset($label['text']);
         $out = parent::checkbox($fieldName, $options);
 
-        $checkboxLabel = $this->_extractOption('checkboxLabel', $options, array());
-        if (false === $checkboxLabel) {
+        if (false === $divCheckbox) {
             return $out;
         }
 
-        return $this->Html->div('checkbox', $this->label($fieldName, $out . $text, $label), $checkboxLabel);
+        return $this->Html->div($divCheckbox, $this->label($fieldName, $out . $text, $label));
     }
 
     public function radio($fieldName, $radioOptions = array(), $options = array())
