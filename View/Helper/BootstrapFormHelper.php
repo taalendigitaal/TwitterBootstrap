@@ -70,12 +70,12 @@ class BootstrapFormHelper extends FormHelper
         unset($label['text']);
         $out = parent::checkbox($fieldName, $options);
 
-        $checkboxLabel = $this->_extractOption('checkboxLabel', $options);
+        $checkboxLabel = $this->_extractOption('checkboxLabel', $options, array());
         if (false === $checkboxLabel) {
             return $out;
         }
 
-        return $this->Html->div('checkbox', $this->label($fieldName, $out . $text, $label));
+        return $this->Html->div('checkbox', $this->label($fieldName, $out . $text, $label), $checkboxLabel);
     }
 
     public function radio($fieldName, $radioOptions = array(), $options = array())
