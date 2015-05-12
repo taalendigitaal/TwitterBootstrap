@@ -94,4 +94,15 @@ class BootstrapHtmlHelper extends HtmlHelper {
 		return parent::tag('ul', implode("\n", $li), $options);
 	}
 
+    public function dropdown($title, $items = [], $options = [] ) {
+        $dropdown  = $this->_View->Html->link($title, '#', $options);
+        $dropdown .= '<ul class="'. empty($options['ulClass'])?'dropdown-menu':$options['ullass'] .'">';
+        foreach ($items as $item) {
+            $dropdown .= '<li>'.$item.'</li>';
+        }
+        $dropdown .= '</ul>';
+
+        return $this->Html->div(empty($options['divClass'])?'btn-group':$options['divClass'], $dropdown, ['escape' => false]);
+	}
+
 }
