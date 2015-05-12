@@ -95,14 +95,16 @@ class BootstrapHtmlHelper extends HtmlHelper {
 	}
 
     public function dropdown($title, $items = [], $options = [] ) {
+
         $dropdown  = $this->_View->Html->link($title, '#', $options);
-        $dropdown .= '<ul class="'. empty($options['ulClass'])?'dropdown-menu':$options['ullass'] .'">';
+        $dropdown .= '<ul class="'. (empty($options['ulClass'])?'dropdown-menu':$options['ulClass']) .'">';
         foreach ($items as $item) {
             $dropdown .= '<li>'.$item.'</li>';
         }
         $dropdown .= '</ul>';
 
-        return $this->Html->div(empty($options['divClass'])?'btn-group':$options['divClass'], $dropdown, ['escape' => false]);
+        return $this->_View->Html->div(empty($options['divClass'])?'btn-group':$options['divClass'], $dropdown, ['escape' => false]);
+
 	}
 
 }
