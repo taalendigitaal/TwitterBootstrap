@@ -284,7 +284,7 @@ class BootstrapFormHelper extends FormHelper
         $input = $hidden . ((false === $div) ? $input : $this->Html->div($divControls, $input));
 
         $out = $before . $label . $between . $input;
-        return (false === $div) ? $out : $this->Html->div($div, $out);
+        return (false === $div) ? $out : $this->Html->div($div, $out, $this->_extractOption('divOptions', $options));
     }
 
     protected function _getType($fieldName, $options)
