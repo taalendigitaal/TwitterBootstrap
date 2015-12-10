@@ -25,9 +25,10 @@ class BootstrapFormHelper extends FormHelper
 
     public $helpers = array('Html' => array('className' => 'TwitterBootstrap.BootstrapHtml'));
     protected $_isHorizontal = false;
+    protected $_formClass = '';
     protected $_Opts = array();
 
-    public function create($model = null, $options = array())
+    public function init($model = null, $options = array())
     {
         $this->settings = array_merge($this->settings, $options);
         if ($this->request->isAjax && ! empty($this->settings['ajaxSettings'])) {
@@ -36,15 +37,19 @@ class BootstrapFormHelper extends FormHelper
         if ($this->request->isAjax && ! empty($options['ajaxSettings'])) {
             $this->settings = array_merge($this->settings, $options['ajaxSettings']);
         }
-
-        $class = explode(' ', $this->_extractOption('class', $options));
-        $inputDefaults = $this->_extractOption('inputDefaults', $options, array());
-
-        if (in_array($this->settings['form_horizontal'], $class)) {
+        
+        $this->_formClass = explode(' ', $this->_extractOption('class', $options));
+        if (in_array($this->settings['form_horizontal'], $this->_formClass)) {
             $this->_isHorizontal = true;
         }
+    }
 
-        if (in_array($this->settings['form_search'], $class) || in_array($this->settings['form_inline'], $class)) {
+    public function create($model = null, $options = array())
+    {
+        $this->init($model, $options);
+        
+        $inputDefaults = $this->_extractOption('inputDefaults', $options, array());
+        if (in_array($this->settings['form_search'], $this->_formClass) || in_array($this->settings['form_inline'], $this->_formClass)) {
             $options['inputDefaults'] = Set::merge($inputDefaults, array('div' => false, 'label' => false));
         } else {
             $options['inputDefaults'] = Set::merge($inputDefaults, array('div' => $this->settings['class_group']));
