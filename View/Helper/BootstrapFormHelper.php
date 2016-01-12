@@ -37,7 +37,7 @@ class BootstrapFormHelper extends FormHelper
         if ($this->request->isAjax && ! empty($options['ajaxSettings'])) {
             $this->settings = array_merge($this->settings, $options['ajaxSettings']);
         }
-        
+
         $this->_formClass = explode(' ', $this->_extractOption('class', $options));
         if (in_array($this->settings['form_horizontal'], $this->_formClass)) {
             $this->_isHorizontal = true;
@@ -47,7 +47,7 @@ class BootstrapFormHelper extends FormHelper
     public function create($model = null, $options = array())
     {
         $this->init($model, $options);
-        
+
         $inputDefaults = $this->_extractOption('inputDefaults', $options, array());
         if (in_array($this->settings['form_search'], $this->_formClass) || in_array($this->settings['form_inline'], $this->_formClass)) {
             $options['inputDefaults'] = Set::merge($inputDefaults, array('div' => false, 'label' => false));
@@ -105,8 +105,12 @@ class BootstrapFormHelper extends FormHelper
             return $this->_restructureLabel($out, array('class' => 'radio-inline'));
         }
 
+        if (! isset($options['class'])) {
+            $options['class'] = '';
+        }
+
         // radio buttons with button style
-        $out = $this->_restructureLabel($out, array('class' => 'radio-inline btn btn-default', 'checkedClass' => 'active', 'disabledClass' => 'disabled'));
+        $out = $this->_restructureLabel($out, array('class' => 'radio-inline btn btn-default ' . $options['class'], 'checkedClass' => 'active', 'disabledClass' => 'disabled'));
         return $this->Html->div('btn-group', $out, array('data-toggle' => 'buttons'));
     }
 
