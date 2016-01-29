@@ -74,9 +74,19 @@ class BootstrapFormHelper extends FormHelper
             $label['class'] = null;
         }
 
+        $labelClass = $this->_extractOption('label_class', $this->_Opts[$fieldName]);
+        if ($divCheckbox) {
+            $label['class'] = $labelClass;
+        }
+
         $text = $label['text'];
         unset($label['text']);
         $out = parent::checkbox($fieldName, $options);
+
+        $divAroundCheckbox = $this->_extractOption('divAroundCheckbox', $options);
+        if (false === $divAroundCheckbox) {
+            return $this->_restructureLabel($out . $text, array('class' => $label['class'] . ' ', 'checkedClass' => 'active', 'disabledClass' => ''));
+        }
 
         if (false === $divCheckbox) {
             return $out;
